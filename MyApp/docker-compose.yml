@@ -1,0 +1,51 @@
+version: '3'
+services:
+  auth-service:
+    build: ./auth-service
+    ports:
+      - "5000:5000"
+    environment:
+      - MONGO_URI=mongodb://mongo-auth:27017/auth
+      - JWT_SECRET=supersecretkey
+    depends_on:
+      - mongo-auth
+
+  blog-service:
+    build: ./blog-service
+    ports:
+      - "5001:5001"
+    depends_on:
+      - mongo-blog
+
+  comment-service:
+    build: ./comment-service
+    ports:
+      - "5002:5002"
+    depends_on:
+      - mongo-comment
+
+  profile-service:
+    build: ./profile-service
+    ports:
+      - "5003:5003"
+    depends_on:
+      - mongo-profile
+
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "8080:8080"
+
+  mongo-auth:
+    image: mongo
+    ports:
+      - "27017:27017"
+
+  mongo-blog:
+    image: mongo
+
+  mongo-comment:
+    image: mongo
+
+  mongo-profile:
+    image: mongo
